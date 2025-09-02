@@ -1,8 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import './Main.css'
 import { assets } from '../../assets/assets'
+import { Context } from '../../context/Context'
 
 function Main() {
+
+  const {onSent, recentPrompt, showResult, loading, resultData, input, setInput} = useContext(Context);
+
   return (
     <div className='main'>
         <div className="nav">
@@ -10,6 +14,9 @@ function Main() {
             <img src="https://placecats.com/300/300" alt="" />
         </div>
         <div className="main-container">
+
+            { !showResult
+            ? <>
             <div className="greet">
                 <p><span>Hello Cat</span></p>
                 <p>How can i help you today?</p>
@@ -32,14 +39,26 @@ function Main() {
                     <img src={assets.compass_icon} alt="" />
                 </div>
             </div>
+            </>
+            : <div className="result">
+                <div className="result-title">
+                    <img src="https://placecats.com/300/300" alt="" />
+                    <p>{recentPrompt}</p>
+                </div>
+                <div className="result-data">
+                    <p >{resultData}</p>
+                    <img src={assets.gemini_icon} alt="" />
+                </div>
+            </div>
+            }
 
             <div className="main-bottom">
                 <div className="search-box">
-                    <input type="text" placeholder="Enter a prompt here"/>
+                    <input onChange={(e) => setInput(e.target.value)} value={input}  type="text" placeholder="Enter a prompt here"/>
                     <div>
                         <img src={assets.gallery_icon} alt="" />
                         <img src={assets.mic_icon} alt="" />
-                        <img src={assets.send_icon} alt="" />
+                        <img onClick={() => onSent()} src={assets.send_icon} alt="" />
                     </div>
                 </div>
             </div>
